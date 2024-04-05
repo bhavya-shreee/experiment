@@ -35,12 +35,12 @@ jobs:
           description: 'GitHub Action'
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket taskdone111 --region us-east-1
+        run: aws s3api create-bucket --bucket task-done1 --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy to S3
         run: |
-          S3_BUCKET="release.easyvsl.com"
-          aws s3 sync dist/ "s3://$S3_BUCKET"
+          S3_BUCKET="task-done1"
+          aws s3 sync /home/ubuntu/experiment/ "s3://$S3_BUCKET"
