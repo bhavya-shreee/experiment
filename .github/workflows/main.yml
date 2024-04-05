@@ -28,15 +28,12 @@ jobs:
           description: 'GitHub Action'
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket task4321 --region us-east-1
+        run: aws s3api create-bucket --bucket taskdone1 --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Upload to S3
-        uses: actions/checkout@v2
-        id: S3
-        with:
-         aws_key_id: ${{secrets.AWS_ACCESS_KEY_ID }}
-         aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-         aws_bucket: task4321
+      - name: Deploy to S3
+        run: |
+          S3_BUCKET="taskdone1"
+          aws s3 sync dist/ "s3://$S3_BUCKET"
