@@ -14,13 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
           
       - name: Add public IP to AWS security group for Web App
         uses: sohelamin/aws-security-group-add-ip-action@master
@@ -35,12 +28,16 @@ jobs:
           description: 'GitHub Action'
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket task-done1 --region us-east-1
+        run: aws s3api create-bucket --bucket exp-task --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Deploy to S3
+      - name: Deploy index.html to S3
         run: |
-          S3_BUCKET="task-done1"
-          aws s3 sync /home/ubuntu/experiment/ "s3://$S3_BUCKET"
+          S3_BUCKET="exp-task"
+          aws s3 cp index.html "s3://$S3_BUCKET/"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
