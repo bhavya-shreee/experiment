@@ -18,13 +18,12 @@ jobs:
       - name: Deploy to S3
 
         run: |
+         S3_BUCKET="exp-task00"
+         aws s3 sync . "s3://$S3_BUCKET"
 
-          S3_BUCKET="exp-task00"
-
-          aws s3 sync build/ "s3://$S3_BUCKET"
 
           - name: Add public IP to AWS security group for Web App
-           uses: actions/checkout@v2
+          uses: actions/checkout@v2
           with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
