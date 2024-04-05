@@ -28,7 +28,7 @@ jobs:
           description: 'GitHub Action'
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket done21 --region us-east-1
+        run: aws s3api create-bucket --bucket task432 --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -39,4 +39,4 @@ jobs:
         with:
          aws_key_id: ${{secrets.AWS_KEY_ID}}
          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-         aws_bucket: done21
+         aws_bucket: task432
