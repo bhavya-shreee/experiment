@@ -14,11 +14,11 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-           S3_BUCKET:experimenttt
-          
+
       - name: Deploy to S3
         run: |
-         aws s3 sync . "s3://$S3_BUCKET"
+          S3_BUCKET="experimenttt"
+          aws s3 sync build/ "s3://$S3_BUCKET"
          
 
       - name: Add public IP to AWS security group for Web App
