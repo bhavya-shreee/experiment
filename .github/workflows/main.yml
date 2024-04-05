@@ -1,39 +1,28 @@
-name: Deploy to Prod Server 
-
+name: Push to S3
 on:
   push:
-    branches:
-      - master
+    branches: [ "main" ]
 
 jobs:
-  deploy_web_app:
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        max-parallel: [1]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
-        
-      - name: Add public IP to AWS security group for Web App
-        uses: sohelamin/aws-security-group-add-ip-action@master
+     
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
-          aws-security-group-id: 'sg-05130a771d99793dc'
-          port: '22'
-          to-port: '22'
-          protocol: 'tcp'
-          description: 'GitHub Action'
+          aws-region: us-east-1
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket task-done22 --region us-east-1
+        run: aws s3api create-bucket --bucket taskdone111 --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
+          
       - name: Sync files to S3 bucket
         run: |
-          aws s3 sync build s3://task-done22 --delete
-
+          aws s3 sync build s3://taskdone111 --delete
