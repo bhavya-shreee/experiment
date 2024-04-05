@@ -7,22 +7,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+    
+        
+      - name: Add public IP to AWS security group for Web App
         uses: actions/checkout@v2
-     
-      - name: Setup AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: 'us-east-1'
+          aws-security-group-id: 'sg-07235332c795bfc6d'
+          port: '22'
+          to-port: '22'
+          protocol: 'tcp'
+          description: 'GitHub Action'
 
       - name: Create S3 Bucket
-        run: aws s3api create-bucket --bucket taskdone112 --region us-east-1
+        run: aws s3api create-bucket --bucket experiment-task1 --region us-east-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           
       - name: Sync files to S3 bucket
         run: |
-          aws s3 sync ./ s3://taskdone112 --delete
+          aws s3 sync ./ s3://experiment-task1 --delete
